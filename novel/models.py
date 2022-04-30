@@ -11,5 +11,5 @@ class Node(MPTTModel):
     content = models.TextField()
     create_date = models.DateTimeField()
     voter = models.ManyToManyField(User, related_name='node_voter')
-    in_work_space = models.BooleanField()
+    in_work_space = models.BooleanField(default=True)
     memo = models.CharField(max_length=20, null=True, blank=True)
