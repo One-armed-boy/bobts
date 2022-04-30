@@ -1,0 +1,38 @@
+<!-- context : node_list -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-3">
+    <table class="table">
+        <thread>
+            <tr class="text-center table-dark">
+                <th>번호</th>
+                <th style="width:50%">제목</th>
+                <th>작가</th>
+                <th>추천수</th>
+                <th>등록일</th>
+            </tr>
+        </thread>
+        <tbody>
+        {% if node_list %}
+            {% for node in node_list %}
+                <tr class="text-center">
+                    <td>
+                        {{ node.id }}
+                    </td>
+                    <td class="text-start">
+                        <a href="#">{{ node.subject }}</a>
+                    </td>
+                    <td>{{ node.author }}</td>
+                    <td>{{ node.voter.count }}</td>
+                    <td>{{ node.create_date }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">글이 없습니다. 어서 자신 만의 이야기를 작성해주세요! </td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

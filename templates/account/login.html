@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-5" align="center" style="width:500px; border:1px solid black;"><br>
+    <form method="post" action="{% url 'account:login_view' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}"> <!-- 로그인 성공 후 이동하는 URL -->
+        {% include "form_errors.html" %}
+        <div class="textbox">
+            <label for="username">사용자ID</label>
+            <input type="text" class="form-control" name="username" id="username"
+                   value="{{ form.username.value|default_if_none:'' }}" style="width:300px;"><br>
+            <label for="password">비밀번호</label>
+            <input type="password" class="form-control" name="password" id="password"
+                   value="{{ form.password.value|default_if_none:'' }}" style="width:300px;">
+        </div>
+        <br><br>
+        <button type="submit" class="btn btn-primary" style="width:250px;">로그인</button>
+    </form>
+    <br>
+    <div class="sign_and_find" >
+        <a href="{% url 'account:signup_view' %}" style="color: black; text-decoration:none;">회원가입</a>
+            <span>|</span>
+        <a href="#" style="color: black; text-decoration:none;">아이디 찾기</a>
+            <span>|</span>
+        <a href="#" style="color: black; text-decoration:none;">비밀번호 찾기</a>
+    </div>
+    <br>
+</div>
+{% endblock %}
