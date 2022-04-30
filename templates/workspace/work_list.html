@@ -18,7 +18,11 @@
                         {{ work.id }}
                     </td>
                     <td class="text-start">
-                        <a href="#">{{ work.memo }}</a>
+                        {% if work.memo %}
+                            <a href="#">{{ work.memo }}</a>
+                        {% else %}
+                            <a href="#">{{ work.create_date }}</a>
+                        {% endif %}
                     </td>
                     <td>{{ work.author }}</td>
                     <td>{{ work.voter.count }}</td>
@@ -32,5 +36,8 @@
         {% endif %}
         </tbody>
     </table>
+    <div>
+        <a class=""
+    </div>
 </div>
 {% endblock %}
