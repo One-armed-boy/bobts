@@ -2,6 +2,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container my-3">
+    <div style="border-bottom:2px solid lightgray">
+        <a>이어 쓰기</a>
+    </div><br>
     <table class="table">
         <thread>
             <tr class="text-center table-dark">
@@ -11,33 +14,64 @@
             </tr>
         </thread>
         <tbody>
-        {% if work_list %}
-            {% for work in work_list %}
+        {% if tail_list %}
+            {% for tail in tail_list %}
                 <tr class="text-center">
                     <td>
-                        {{ work.id }}
+                        {{ tail.id }}
                     </td>
                     <td class="text-start">
-                        {% if work.memo %}
-                            <a href="#">{{ work.memo }}</a>
+                        {% if tail.memo %}
+                            <a href="#">{{ tail.memo }}</a>
                         {% else %}
-                            <a href="#">{{ work.create_date }}</a>
+                            <a href="#">{{ tail.create_date }}</a>
                         {% endif %}
                     </td>
-                    <td>{{ work.author }}</td>
-                    <td>{{ work.voter.count }}</td>
-                    <td>{{ work.create_date }}</td>
+                    <td>{{ tail.create_date }}</td>
                 </tr>
             {% endfor %}
         {% else %}
             <tr>
-                <td colspan="4" class="text-center">워크 스페이스에 작성 중인 글이 없습니다! </td>
+                <td colspan="4" class="text-center">이어 쓰기 중인 글이 없습니다! </td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div><br><br>
+<div class="container my-3">
+    <div style="border-bottom:2px solid lightgray">
+        <a>처음 쓰기</a>
+    </div><br>
+    <table class="table">
+        <thread>
+            <tr class="text-center table-dark">
+                <th>번호</th>
+                <th style="width:50%">제목</th>
+                <th>등록일</th>
+            </tr>
+        </thread>
+        <tbody>
+        {% if head_list %}
+            {% for head in head_list %}
+                <tr class="text-center">
+                    <td>
+                        {{ head.id }}
+                    </td>
+                    <td class="text-start">
+                        <a href="{% url 'workspace:start_detail' head.id %}">{{ head.subject }}</a>
+                    </td>
+                    <td>{{ head.create_date }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4" class="text-center">처음 쓰기 중인 글이 없습니다! </td>
             </tr>
         {% endif %}
         </tbody>
     </table>
     <div>
-        <a class=""
+        <a href="{% url 'workspace:start_write' %}" class="btn btn-primary">시작</a>
     </div>
 </div>
 {% endblock %}
