@@ -33,7 +33,7 @@ def start_write(request):
             start.create_date=timezone.now()
             #start.parent=''
             start.in_work_space=True
-            start.memo=''
+            #start.memo=''
             start.save()
             return redirect('workspace:start_detail',node_id=start.id)
     else:
@@ -74,5 +74,29 @@ def node_eject(request,node_id):
         messages.error(request, '내보낼 권한이 없습니다.')
         return redirect('workspace:start_detail', node_id=node.id)
     node.in_work_space=False
+    node.create_date=timezone.now()
     node.save()
     return redirect('workspace:index')
+
+
+@login_required(login_url='account:login_view')
+def tail_write(request,node_id):
+    if request.method=='POST':
+        form=TailForm(request.POST)
+        if form.is_valid():
+            tail=form.save(commit=False)
+            tail.author=request.user
+            tail.parent=Node.objects.get(id=node_id)
+            tail.create_date=timezone.now()
+            tail.in_work_space=True
+            tail.save()
+            return redirect('novel:node_detail',node_id=node_id)
+    else:
+        form=TailForm()
+    return render(request,'workspace/tail_write.html',{'form':form})
+
+@login_required(login_url='account:login_view')
+def tail_detail(request,node_id):
+    tail=get_object_or_404(Node,pk=node_id)
+    context = {'tail': tail}
+    return render(request, 'workspace/tail_detail.html', context)

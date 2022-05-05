@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load novel_filter %}
+{% block content %}
+<div class="container my-3">
+    <!--질문-->
+    <!-- messages 표시 -->
+    {% if messages %}
+    <div class="alert alert-danger my-3" role="alert">
+        {% for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul><li>{{ message.message }}</li></ul>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if node.parents %}
+    {% else %}
+    <h2 class="border-bottom py-2">{{ node.subject }}</h2>
+    {% endif %}
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text">{{ node.content|mark }}</div>
+            <div class="d-flex justify-content-end">
+                {% if node.modify_date %}
+                <div class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">modified at</div>
+                    <div>{{ node.modify_date }}</div>
+                </div>
+                {% endif %}
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <div class="mb-2">{{ node.author }}</div>
+                    <div>{{ node.create_date }}</div>
+                </div>
+            </div>
+        </div>
+        <!-- 추천 버튼, 수정 버튼, 삭제 버튼 -->
+        <div class="my-3">
+            <a href="javascript:void(0)" data-uri="{% url 'novel:node_vote' node.id %}"
+               class="recommend btn btn-sm btn-outline-secondary">추천
+                <span class="badge rounded-pill bg-success">{{ node.voter.count }}</span>
+            </a>
+            <!-- 서비스 특성 상 수정, 삭제 기능은 없어야할 듯?
+            {% if request.user == node.author %}
+            <a href="#"
+               class="btn btn-sm btn-outline-secondary">수정</a>
+            <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary"
+               data-uri="#">삭제</a>
+            {% endif %}
+            -->
+            <a href="javascript:void(0)" data-uri="{% url 'workspace:tail_write' node.id %}"
+               class="addtowork btn btn-sm btn-outline-secondary">워크스페이스 추가</a>
+        </div>
+    </div>
+    <!--답변-->
+    <h5 class="border-bottom my-3 py-2">{{childlist.count}}개의 이후 갈래가 존재합니다.</h5>
+    <table class="table">
+        <thread>
+            <tr class="text-center">
+                <th style="width:10%">번호</th>
+                <th style="width:50%">메모</th>
+                <th style="width:20%">작가</th>
+                <th style="width:20%">등록일</th>
+            </tr>
+        </thread>
+        <tbody>
+        {% for child in childlist %}
+            <tr class="text-center">
+                <td>{{ child.id }}</td>
+                <td class="text-start">
+                    <a href="{% url 'novel:node_detail' child.id %}">{{ child.memo }}</a>
+                    {% if child.voter.count > 0 %}
+                        <span class="text-danger small mx-2">{{ child.voter.count }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ child.author }}</td>
+                <td>{{ child.create_date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+const addtowork_elements = document.getElementsByClassName("addtowork");
+Array.from(addtowork_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("워크 스페이스에 추가하실겁니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+const recommend_elements = document.getElementsByClassName("recommend");
+Array.from(recommend_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 추천하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
+{% endblock %}

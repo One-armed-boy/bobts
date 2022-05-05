@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">이어 쓰기</h5>
+    <form method="post">
+        {% csrf_token %}
+        <!-- 오류 표시 -->
+        {% include 'form_errors.html' %}
+        <!-- 오류 표시 end -->
+        <div class="mb-3">
+            <label for="memo" class="form-label">메모</label>
+            <input type="text" class="form-control" name="memo" id="memo"
+                   value="{{ form.subject.value|default_if_none:'' }}">
+        </div>
+        <button type="submit" class="btn btn-primary">저장</button>
+    </form>
+</div>
+
+{% endblock %}

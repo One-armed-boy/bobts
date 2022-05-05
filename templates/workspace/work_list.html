@@ -22,9 +22,9 @@
                     </td>
                     <td class="text-start">
                         {% if tail.memo %}
-                            <a href="#">{{ tail.memo }}</a>
+                            <a href="{% url 'workspace:tail_detail' tail.id %}">{{ tail.memo }}</a>
                         {% else %}
-                            <a href="#">{{ tail.create_date }}</a>
+                            <a href="{% url 'workspace:tail_detail' tail.id %}">{{ tail.create_date }}</a>
                         {% endif %}
                     </td>
                     <td>{{ tail.create_date }}</td>

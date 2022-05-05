@@ -21,7 +21,7 @@
                         {{ node.id }}
                     </td>
                     <td class="text-start">
-                        <a href="#">{{ node.subject }}</a>
+                        <a href="{% url 'novel:node_detail' node.id %}">{{ node.subject }}</a>
                     </td>
                     <td>{{ node.author }}</td>
                     <td>{{ node.voter.count }}</td>
